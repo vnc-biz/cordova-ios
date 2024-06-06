@@ -283,9 +283,14 @@ static void * KVOContext = &KVOContext;
 }
 
 - (void) onAppWillEnterForeground:(NSNotification*)notification {
+    NSLog(@"%@", @"CDVWebViewEngine onAppWillEnterForeground!");
     if ([self shouldReloadWebView]) {
         NSLog(@"%@", @"CDVWebViewEngine reloading!");
-        [(WKWebView*)_engineWebView reload];
+        NSString *sURL = @"app://localhost/index.html";
+        NSURL *url = [NSURL URLWithString:sURL];
+        NSLog(@"onAppWillEnterForeground  url: %@", [url absoluteString]);
+        [(WKWebView*)_engineWebView loadRequest:[NSURLRequest requestWithURL:url]];
+//        [(WKWebView*)_engineWebView reload];
     }
 }
 
@@ -298,14 +303,19 @@ static void * KVOContext = &KVOContext;
 - (BOOL)shouldReloadWebView:(NSURL*)location title:(NSString*)title
 {
     BOOL title_is_nil = (title == nil);
+    BOOL title_is_empty = ([title length] == 0);
+    BOOL title_is_bad = (title_is_nil || title_is_empty);
     BOOL location_is_blank = [[location absoluteString] isEqualToString:@"about:blank"];
 
-    BOOL reload = (title_is_nil || location_is_blank);
+    BOOL reload = (title_is_bad || location_is_blank);
 
 #ifdef DEBUG
     NSLog(@"%@", @"CDVWebViewEngine shouldReloadWebView::");
     NSLog(@"CDVWebViewEngine shouldReloadWebView title: %@", title);
+    NSLog(@"CDVWebViewEngine shouldReloadWebView title length: %u", [title length]);
+    NSLog(@"CDVWebViewEngine shouldReloadWebView title is nil: %u", title_is_nil);
     NSLog(@"CDVWebViewEngine shouldReloadWebView location: %@", [location absoluteString]);
+    NSLog(@"CDVWebViewEngine shouldReloadWebView location is blank: %u", location_is_blank);
     NSLog(@"CDVWebViewEngine shouldReloadWebView reload: %u", reload);
 #endif
 
