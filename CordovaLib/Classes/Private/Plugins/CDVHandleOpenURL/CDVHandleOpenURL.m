@@ -65,6 +65,7 @@
     };
 
     if (!pageLoaded) {
+        NSLog(@"handleOpenURL  url: %@", [url absoluteString]);
         NSString* jsString = @"document.readystate";
         [self.webViewEngine evaluateJavaScript:jsString
                              completionHandler:^(id object, NSError* error) {
