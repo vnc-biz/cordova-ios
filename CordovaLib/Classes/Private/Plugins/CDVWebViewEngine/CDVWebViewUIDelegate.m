@@ -165,7 +165,8 @@
     WKPermissionDecision decision;
 
     if (_mediaPermissionGrantType == CDVWebViewPermissionGrantType_Prompt) {
-        decision = WKPermissionDecisionPrompt;
+        decision = WKPermissionDecisionGrant;
+        // decision = WKPermissionDecisionPrompt;
     }
     else if (_mediaPermissionGrantType == CDVWebViewPermissionGrantType_Deny) {
         decision = WKPermissionDecisionDeny;
@@ -178,7 +179,8 @@
             decision = WKPermissionDecisionGrant;
         }
         else {
-            decision =_mediaPermissionGrantType == CDVWebViewPermissionGrantType_GrantIfSameHost_ElsePrompt ? WKPermissionDecisionPrompt : WKPermissionDecisionDeny;
+            decision = WKPermissionDecisionGrant;
+            // decision =_mediaPermissionGrantType == CDVWebViewPermissionGrantType_GrantIfSameHost_ElsePrompt ? WKPermissionDecisionPrompt : WKPermissionDecisionDeny;
         }
     }
 
